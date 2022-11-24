@@ -23,12 +23,16 @@ include $(BOLOS_SDK)/Makefile.defines
 
 APP_LOAD_PARAMS  = --curve secp256k1
 ifeq ($(TARGET_NAME), TARGET_NANOX)
-APP_LOAD_PARAMS=--appFlags 0x200  # APPLICATION_FLAG_BOLOS_SETTINGS
+APP_LOAD_PARAMS += --appFlags 0x200  # APPLICATION_FLAG_BOLOS_SETTINGS
 else
-APP_LOAD_PARAMS=--appFlags 0x000
+APP_LOAD_PARAMS += --appFlags 0x000
 endif
-APP_LOAD_PARAMS += --path "44'"
+APP_LOAD_PARAMS += --path "44'/441'"
 APP_LOAD_PARAMS += $(COMMON_LOAD_PARAMS)
+
+# Ledger: add the "Pending security review" disclaimer
+APP_LOAD_PARAMS += --tlvraw 9F:01
+DEFINES += HAVE_PENDING_REVIEW_SCREEN
 
 APPNAME      = "Aergo"
 APPVERSION_M = 2
@@ -128,4 +132,4 @@ include $(BOLOS_SDK)/Makefile.rules
 dep/%.d: %.c Makefile
 
 listvariants:
-	@echo VARIANTS COIN BOL
+	@echo VARIANTS COIN AERGO
